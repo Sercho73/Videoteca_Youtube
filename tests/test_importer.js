@@ -1,0 +1,12 @@
+'use strict';
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const source=fs.readFileSync('web/importer.js','utf8').split('// BEGIN playlist metadata: restrict headings to the active playlist page.')[1].split('// END playlist metadata')[0];
+const read=vm.runInNewContext(source+';playlistMetadata',{URL});
+const noPlaylist={querySelector:()=>null};
+assert.equal(read(noPlaylist,{header:{playlistHeaderRenderer:{playlistId:'other',title:{simpleText:'Wrong'}}}},'PLtest').title_verified,false);
+const header={closest:()=>null,querySelector:()=>({textContent:'IA'}),querySelectorAll:()=>[{textContent:'678 vídeos'}]};
+const doc={querySelector:()=>({querySelectorAll:()=>[header]})};
+assert.equal(read(doc,{},'PLtest').title,'IA');
+assert.equal(read(doc,{},'PLtest').expected_count,678);
+assert.equal(read(noPlaylist,{metadata:{playlistMetadataRenderer:{title:'IA'}},microformat:{microformatDataRenderer:{urlCanonical:'https://www.youtube.com/playlist?list=PLtest'}}},'PLtest').title,'IA');
+console.log('4 importer metadata checks passed');

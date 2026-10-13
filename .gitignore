@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+backups/
+data/
+exports/
+*.sqlite*
+*.db
+*.db-*
+.env
+.env.*
+youtube-api.json
+mobile-access.json
+catalog*.json
+videoteca-copia-*.json
+# Documentación y capturas de la instalación personal
+docs/verification.md
+docs/design.md
+docs/plan.md
+docs/*.png
+docs/*.jpg
